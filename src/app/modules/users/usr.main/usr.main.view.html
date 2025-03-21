@@ -1,0 +1,37 @@
+<div class="flex justify-center items-center m-40">
+    <div class="w-full p-8 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Creación de un usuario y login</h1>
+        <h5 class="text-sm text-gray-600 dark:text-gray-300">
+            Crea una base de datos con tamaños y crecimientos personalizados.
+        </h5>
+        <div class="flex items-center justify-end">
+            <a href="/users/create" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Agregar
+            </a>
+        </div>
+        <div class="relative overflow-x-auto mt-4">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Usuario</th>
+                        <th scope="col" class="px-6 py-3">Login</th>
+                        <th scope="col" class="px-6 py-3">Permisos</th>
+                        <th scope="col" class="px-6 py-3">Permisos de tabla</th>
+                        <th scope="col" class="px-6 py-3">Roles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let usr of usrs" class="border-b bg-white dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ usr.UserName }}
+                        </th>
+                        <td class="px-6 py-4">{{ usr.LoginName }}</td>
+                        <td class="px-6 py-4">{{ usr.SchemaPerms }}</td>
+                        <td class="px-6 py-4">{{ usr.TablePerms }}</td>
+                        <td class="px-6 py-4">{{ usr.RoleList }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

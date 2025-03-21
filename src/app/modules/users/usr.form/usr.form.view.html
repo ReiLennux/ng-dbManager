@@ -1,0 +1,94 @@
+<form [formGroup]="usrForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <a href="/users" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-gray-500 rounded-lg">
+        ←
+        Regresar
+    </a>
+    <div *ngIf="success" class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+        <span class="sr-only">Info</span>
+        <div class="ms-3 text-sm font-medium">
+          Login y usuario creado
+        </div>
+      </div>
+    
+    <h2 class="text-2xl font-bold mb-6">User and login Configuration</h2>
+
+    <!-- Username -->
+    <div class="mb-4">
+        <label for="UserName" class="block mb-2 text-xs font-medium text-gray-900">User Name</label>
+        <input type="text" id="UserName" formControlName="UserName"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            [ngClass]="{'border-red-500': isFieldInvalid('UserName')}">
+        <p *ngIf="isFieldInvalid('UserName')" class="mt-2 text-xs text-red-600">User name is required</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-6">
+        <!-- Login -->
+        <div class="">
+            <label for="LoginName" class="block mb-2 text-xs font-medium text-gray-900">Login</label>
+            <input type="text" id="LoginName" formControlName="LoginName"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                [ngClass]="{'border-red-500': isFieldInvalid('LoginName')}">
+            <p *ngIf="isFieldInvalid('LoginName')" class="mt-2 text-xs text-red-600">Login is required</p>
+        </div>
+
+        <!-- Password -->
+        <div class="">
+            <label for="Password" class="block mb-2 text-xs font-medium text-gray-900">Password</label>
+            <input type="password" id="Password" formControlName="Password"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                [ngClass]="{'border-red-500': isFieldInvalid('Password')}">
+            <p *ngIf="isFieldInvalid('Password')" class="mt-2 text-xs text-red-600">Password is required</p>
+        </div>
+    </div>
+
+<!-- Database Name -->
+<div class="mb-4">
+    <label for="databaseName" class="block mb-2 text-xs font-medium text-gray-900">Database Name</label>
+    <select id="databaseName" (change)="onselectedDatabases()" formControlName="databaseName"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            [ngClass]="{'border-red-500': isFieldInvalid('databaseName')}">
+        <option value="" disabled selected>Select a Database</option>
+        <option *ngFor="let db of databases" [value]="db">{{ db }}</option>
+    </select>
+    <p *ngIf="isFieldInvalid('databaseName')" class="mt-2 text-xs text-red-600">Database name is required</p>
+</div>
+
+  
+
+    <!-- Schema Permissions -->
+    <div class="mb-4">
+        <label for="SchemaPerms" class="block mb-2 text-xs font-medium text-gray-900">Schema Permissions</label>
+        <input type="text" id="SchemaPerms" formControlName="SchemaPerms"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            [ngClass]="{'border-red-500': isFieldInvalid('SchemaPerms')}">
+        <p *ngIf="isFieldInvalid('SchemaPerms')" class="mt-2 text-xs text-red-600">Schema permissions are required</p>
+    </div>
+
+    <!-- Table Permissions -->
+    <div class="mb-4">
+        <label for="TablePerms" class="block mb-2 text-xs font-medium text-gray-900">Table Permissions</label>
+        <input type="text" id="TablePerms" formControlName="TablePerms"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            [ngClass]="{'border-red-500': isFieldInvalid('TablePerms')}">
+        <p *ngIf="isFieldInvalid('TablePerms')" class="mt-2 text-xs text-red-600">Table permissions are required</p>
+    </div>
+
+    <!-- Role Selection -->
+    <div class="mb-4">
+        <label class="block mb-2 text-xs font-medium text-gray-900">Assign Roles</label>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 m-5">
+            <div *ngFor="let role of roles; let i = index" class="flex items-center">
+                <input type="checkbox" [id]="'role-' + i" [value]="role" (change)="toggleRole(role)"
+                    [checked]="isRoleSelected(role)"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                <label [for]="'role-' + i" class="ml-2 text-xs font-medium text-gray-900">{{ role }}</label>
+            </div>
+        </div>
+    </div>
+
+
+    <button type="submit"
+        class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center">
+        Submit
+    </button>
+</form>

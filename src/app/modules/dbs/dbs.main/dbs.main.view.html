@@ -1,0 +1,35 @@
+<div class="flex justify-center items-center m-40">
+    <div class="w-full p-8 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Creación de Base de Datos</h1>
+        <h5 class="text-sm text-gray-600 dark:text-gray-300">
+            Crea una base de datos con tamaños y crecimientos personalizados.
+        </h5>
+        <div class="flex items-center justify-end">
+            <a href="/dbs/create" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Agregar
+            </a>
+        </div>
+        <div class="relative overflow-x-auto mt-4">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Base de Datos</th>
+                        <th scope="col" class="px-6 py-3">Archivo MDF</th>
+                        <th scope="col" class="px-6 py-3">Archivo LDF</th>
+                        <th scope="col" class="px-6 py-3">Fecha de Creación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let db of dbs" class="border-b bg-white dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ db.database_name }}
+                        </th>
+                        <td class="px-6 py-4">{{ db.mdf_path }}</td>
+                        <td class="px-6 py-4">{{ db.ldf_path }}</td>
+                        <td class="px-6 py-4">{{ db.create_date | date:'short' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
