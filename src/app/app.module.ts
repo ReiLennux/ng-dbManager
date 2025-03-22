@@ -12,6 +12,8 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormsModule } from '@angular/forms';
+import { BackupMainView } from './modules/backups/backup.main/backup.main.view';
+import { BackupFormView } from './modules/backups/backup.form/backup.form.view';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +21,9 @@ import { FormsModule } from '@angular/forms';
     DbsMainView,
     DbsFormView,
     UsrFormView,
-    UsrMainView
+    UsrMainView,
+    BackupMainView,
+    BackupFormView
   ],
   imports: [
     BrowserModule,
