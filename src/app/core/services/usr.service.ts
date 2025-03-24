@@ -16,8 +16,8 @@ export class UsrService {
     return this.http.get<usrviewDto[]>(`${this.apiUrl}`);
   }
 
-  createUser(user: usrformDto): Observable<usrformDto> {
-    return this.http.post<usrformDto>(`${this.apiUrl}`, user);
+  createUser(user: usrformDto): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, user);
   }
 
   

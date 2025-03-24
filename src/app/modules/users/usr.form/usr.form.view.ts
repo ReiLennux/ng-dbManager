@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsrService } from '../../../core/services/usr.service';
 import { DbsService } from '../../../core/services/dbs.service';
 
@@ -19,6 +19,9 @@ export class UsrFormView implements OnInit {
   schemas: string[] = [];
   tables: { SchemaName: string, TableName: string }[] = [];
   success: boolean = false;
+  failure: boolean = false;
+  failureMessagge: string = "";
+
 
   // Permisos
   schemaPermissionsList: string[] = ['SELECT', 'INSERT', 'UPDATE', 'DELETE'];
@@ -33,9 +36,9 @@ export class UsrFormView implements OnInit {
       databaseName: ['', Validators.required],
       LoginName: ['', Validators.required],
       UserName: ['', Validators.required],
-      Password: ['', [Validators.required, Validators.maxLength(8), Validators.minLength(8)]],
+      Password: ['', [Validators.required, Validators.maxLength(8), Validators.minLength(8), this.passwordComplexityValidator()]],
       SchemaPerms: ['', Validators.required],
-      TablePerms: ['', Validators.required],
+      TablePerms: ['',],
       RoleList: [[]],
     });
   }
@@ -63,15 +66,67 @@ export class UsrFormView implements OnInit {
       });
       
       console.log(this.usrForm.value);
-      this.usrService.createUser(this.usrForm.value).subscribe(res => console.log(res));
-
-      this.success = true;
-      this.resetForm();
-      setTimeout(() => this.success = false, 5000);
+  
+      this.usrService.createUser(this.usrForm.value).subscribe({
+        next: (res) => {
+          console.log(res);
+  
+          // Manejo del código de respuesta del SP
+          switch (res) {
+            case 0:
+              // Éxito
+              this.success = true;
+              this.resetForm();
+              setTimeout(() => this.success = false, 5000);
+              break;
+            case 1:
+              // Error general
+              this.failure = true;
+              this.failureMessagge = "An unexpected error occurred.";
+              setTimeout(() => this.failure = false, 5000);
+              break;
+            case 2:
+              // El login ya existe
+              this.failure = true;
+              this.failureMessagge = "The login already exists on the server.";
+              setTimeout(() => this.failure = false, 5000);
+              break;
+            case 3:
+              // El usuario ya existe
+              this.failure = true;
+              this.failureMessagge = "The user already exists in the database.";
+              setTimeout(() => this.failure = false, 5000);
+              break;
+            case 6:
+              // Error en el formato de permisos de esquemas
+              this.failure = true;
+              this.failureMessagge = "Schema permissions format is incorrect.";
+              setTimeout(() => this.failure = false, 5000);
+              break;
+            case 7:
+              // Error en el formato de permisos de tablas
+              this.failure = true;
+              this.failureMessagge = "Table permissions format is incorrect.";
+              setTimeout(() => this.failure = false, 5000);
+              break;
+            default:
+              // Otro error desconocido
+              this.failure = true;
+              this.failureMessagge = `An unknown error occurred (Code: ${res}).`;
+              setTimeout(() => this.failure = false, 5000);
+              break;
+          }
+        },
+        error: (err) => {
+          console.error(err);
+          this.failureMessagge = "An unexpected error occurred.";
+        }
+      });
     } else {
       this.markFormGroupTouched(this.usrForm);
     }
   }
+  
 
   private markFormGroupTouched(formGroup: FormGroup): void {
     Object.values(formGroup.controls).forEach(control => {
@@ -91,10 +146,6 @@ export class UsrFormView implements OnInit {
     this.tablePermsString = '';
   }
 
-  isFieldInvalid(fieldName: string): boolean {
-    const field = this.usrForm.get(fieldName);
-    return field ? field.invalid && (field.dirty || field.touched) : false;
-  }
 
   toggleRole(role: string): void {
     this.selectedRoles.includes(role) 
@@ -141,4 +192,38 @@ export class UsrFormView implements OnInit {
       TablePerms: this.tablePermsString 
     });
   }
+
+    // Función para validar la complejidad de la contraseña
+    passwordComplexityValidator() {
+      return (control: AbstractControl) => {
+        const password = control.value;
+        if (!password) {
+          return null;
+        }
+    
+        const minLengthValid = password.length >= 8;
+        const uppercaseValid = /[A-Z]/.test(password);
+        const lowercaseValid = /[a-z]/.test(password);
+        const digitValid = /\d/.test(password);
+        const symbolValid = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+        const charTypesCount = [uppercaseValid, lowercaseValid, digitValid, symbolValid].filter(Boolean).length;
+    
+        if (minLengthValid && charTypesCount >= 3) {
+          return null;
+        } else {
+          return { passwordTooSimple: true };  // <-- Esto está correcto
+        }
+      };
+    }
+  
+    // Método para verificar si el campo está inválido
+    isFieldInvalid(field: string) {
+      return this.usrForm.controls[field].invalid && (this.usrForm.controls[field].touched || this.usrForm.controls[field].dirty);
+    }
+  
+    // Método para verificar si la contraseña es demasiado simple
+    passwordTooSimple() {
+      return this.usrForm.controls['Password'].hasError('passwordTooSimple');
+    }
 }
