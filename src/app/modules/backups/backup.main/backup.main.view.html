@@ -1,18 +1,26 @@
 <div class="flex justify-center items-center m-40">
-    <div class="w-full p-8 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-        <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Administración de backups</h1>
-        <h5 class="text-sm text-gray-600 dark:text-gray-300">
+
+    <div class="w-full p-8 bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div *ngIf="failrule"
+        class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+        role="alert">
+        <div>
+            <span class="font-medium">Oh no!</span> Hubo un problema al generar el respaldo :/
+        </div>
+    </div>
+    <div *ngIf="success" class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+        role="alert">
+        <div>
+            <span class="font-medium">Exito!</span> El respaldo se genero de manera adecuada. ^v^
+        </div>
+    </div>
+        <h1 class="text-xl font-semibold text-gray-900 ">Administración de backups</h1>
+        <h5 class="text-sm text-gray-600 ">
             Información general sobre la estrategia de respaldo.
         </h5>
-        <div class="flex items-center justify-end">
-            <a href="/dbs/create"
-                class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Agregar
-            </a>
-        </div>
         <div class="relative overflow-x-auto mt-4">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table class="w-full text-sm text-left text-gray-500 ">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3">#</th>
                         <th scope="col" class="px-6 py-3">Base de Datos</th>
@@ -22,111 +30,135 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let db of dbs" class="border-b bg-white dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <tr *ngFor="let db of dbs" class="border-b bg-white">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{ db.id }}
                         </th>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{ db.database_name }}
                         </th>
                         <td class="px-6 py-4">{{ db.create_date | date:'short' }}</td>
                         <td class="px-6 py-4">
-                            <button (click)="toggleModal(db.id)"
-                                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            <button (click)="toggleModal(db.id) ; setDb(db.database_name)"
+                                class="block text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 type="button">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.75 4H19M7.75 4a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 4h2.25m13.5 6H19m-2.25 0a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 10h11.25m-4.5 6H19M7.75 16a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 16h2.25"/>
+                                <svg class="w-5 h-5 text-white" aria-hidden="true" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M7.75 4H19M7.75 4a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 4h2.25m13.5 6H19m-2.25 0a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 10h11.25m-4.5 6H19M7.75 16a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 16h2.25" />
                                 </svg>
                             </button>
 
-                            <!-- Modal -->
-                            <div *ngIf="isModalOpen(db.database_name)"
-                                class="fixed inset-0 z-50 flex items-center justify-center bg-[#00000030]">
-                                <div class="relative p-4 w-full max-w-md max-h-full">
-                                    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                                        <button type="button" (click)="toggleModal(db.database_name)"
-                                            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 14 14">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                            </svg>
-                                            <span class="sr-only">Cerrar modal</span>
-                                        </button>
-                                        <div class="p-4 md:p-5 text-center">
-                                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
-                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 20 20">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                            </svg>
-                                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                                                ¿Estás seguro de querer ver los backups de {{ db.database_name }}?
-                                            </h3>
-                                            <button (click)="confirmBackup(db.database_name)" type="button"
-                                                class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                                                Sí, generar
-                                            </button>
-                                            <button (click)="toggleModal(db.database_name)" type="button"
-                                                class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <button (click)="toggleModal(db.database_name)"
-                                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                type="button">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 18">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
-                                </svg>
-                            </button>
                             <!-- Modal -->
                             <div *ngIf="isModalOpen(db.id)"
                                 class="fixed inset-0 z-50 flex items-center justify-center bg-[#00000030]">
                                 <div class="relative p-4 w-full max-w-md max-h-full">
                                     <!-- Modal content -->
-                                    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                                    <div class="relative bg-white rounded-lg shadow-sm">
                                         <!-- Modal header -->
-                                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                        <div
+                                            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
+                                            <h3 class="text-xl font-semibold text-gray-900">
                                                 Respaldo manual de {{ db.database_name }}
                                             </h3>
-                                            <button (click)="toggleModal(db.id)" type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal">
-                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                            <button (click)="toggleModal(db.id)" type="button"
+                                                class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                                                data-modal-hide="authentication-modal">
+                                                <svg class="w-3 h-3" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                                 </svg>
                                                 <span class="sr-only">Close modal</span>
                                             </button>
                                         </div>
                                         <!-- Modal body -->
                                         <div class="p-4 md:p-5">
-                                            <form  class="space-y-4" action="#">
+                                            <form [formGroup]="BackupForm" (ngSubmit)="onSubmit(db.id)"
+                                                class="space-y-4">
 
-                                                <div class="flex items-center">
-                                                    <input id="bordered-checkbox-1" type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                    <label for="bordered-checkbox-1" class="w-full ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Seleccionar todos </label>
+                                                <input type="text" id="dbname" formControlName="dbname" class="hidden">
+
+                                                <div *ngFor="let option of backupOptions"
+                                                    class="flex items-center ps-4 border border-gray-200 rounded-sm">
+                                                    <input type="radio" [id]="option.value" formControlName="backupType"
+                                                        [value]="option.value"
+                                                        class="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-pink-500 focus:ring-2">
+                                                    <label [for]="option.value"
+                                                        class="w-full py-4 ms-2 text-sm font-medium text-gray-900">
+                                                        {{ option.label }}
+                                                        <span class="block text-xs text-gray-500">{{ option.description
+                                                            }}</span>
+                                                    </label>
                                                 </div>
-                                                <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                                                    <input id="bordered-checkbox-2" type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                    <label for="bordered-checkbox-2" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Respaldo Completo</label>
-                                                </div>
-                                                <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                                                    <input id="bordered-checkbox-1" type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                    <label for="bordered-checkbox-1" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Respaldo Diferencial</label>
-                                                </div>
-                                                <div class="flex items-center ps-4 border border-gray-200 rounded-sm dark:border-gray-700">
-                                                    <input id="bordered-checkbox-2" type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                    <label for="bordered-checkbox-2" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Respaldo de logs</label>
-                                                </div>
-                                                
-                                                <button (click)="confirmBackup(db.id)" type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Generar Respaldo(s)</button>
+
+                                                <button type="submit"
+                                                    class="w-full text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                                    Generar Respaldo
+                                                </button>
                                             </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <button (click)="openModalWithBackups(db.database_name)"
+                                class="block text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                type="button">
+                                <svg class="w-5 h-5 text-white" aria-hidden="true" fill="none" viewBox="0 0 16 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3" />
+                                </svg>
+                            </button>
+                            <!-- Modal -->
+                            <div *ngIf="isModalOpen(db.database_name)"
+                                class="fixed inset-0 z-50 flex items-center justify-center bg-[#00000030]">
+                                <div class="relative p-4 w-full max-w-2xl max-h-2/4 overflow-y-auto">
+                                    <div class="relative bg-white rounded-lg shadow-md p-6">
+                                        <!-- Botón de cerrar -->
+                                        <button type="button" (click)="toggleModal(db.database_name)"
+                                            class="absolute top-3 right-3 text-gray-400 hover:text-gray-900">
+                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                            </svg>
+                                        </button>
+
+                                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">
+                                            Respaldos de {{ db.database_name }}
+                                        </h3>
+                                        <div *ngIf="!backups.length">
+                                            <p class="flex justify-center text-pink-800">
+                                                No existen respaldo para esta base de datos
+                                            </p>
+                                        </div>
+                                        <!-- Contenedor scrollable -->
+                                        <div class="max-h-80 overflow-y-auto space-y-4">
+                                            <div *ngFor="let backup of backups"
+                                                class="flex items-center justify-between bg-gray-50  p-4 rounded-lg shadow-md">
+                                                <div>
+                                                    <p class="text-base font-medium text-gray-700 ">
+                                                        {{ backup.physical_device_name }}
+                                                    </p>
+                                                    <p class="my-1 font-medium text-xs text-pink-700 ">
+                                                        Tipo: {{GetType(backup.type) }}
+                                                    </p>
+                                                    <p class="text-sm text-gray-600 ">
+                                                        {{ backup.backup_start_date | date:'short' }} - {{
+                                                        backup.backup_finish_date | date:'short' }}
+                                                    </p>
+                                                </div>
+                                                <button (click)="downloadBackup(backup.physical_device_name)"
+                                                    class="text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300  font-medium rounded-md text-sm px-4 py-2">
+                                                    Descargar
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

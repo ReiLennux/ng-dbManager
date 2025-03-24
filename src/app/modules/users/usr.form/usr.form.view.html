@@ -17,7 +17,7 @@
     <div class="mb-4">
       <label for="UserName" class="block mb-2 text-xs font-medium text-gray-900">User Name</label>
       <input type="text" id="UserName" formControlName="UserName"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
         [ngClass]="{'border-red-500': isFieldInvalid('UserName')}">
       <p *ngIf="isFieldInvalid('UserName')" class="mt-2 text-xs text-red-600">User name is required</p>
     </div>
@@ -27,7 +27,7 @@
       <div>
         <label for="LoginName" class="block mb-2 text-xs font-medium text-gray-900">Login</label>
         <input type="text" id="LoginName" formControlName="LoginName"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
           [ngClass]="{'border-red-500': isFieldInvalid('LoginName')}">
         <p *ngIf="isFieldInvalid('LoginName')" class="mt-2 text-xs text-red-600">Login is required</p>
       </div>
@@ -36,7 +36,7 @@
       <div>
         <label for="Password" class="block mb-2 text-xs font-medium text-gray-900">Password</label>
         <input type="password" id="Password" formControlName="Password"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
           [ngClass]="{'border-red-500': isFieldInvalid('Password')}">
         <p *ngIf="isFieldInvalid('Password')" class="mt-2 text-xs text-red-600">Password is required</p>
       </div>
@@ -46,7 +46,7 @@
     <div class="mb-4">
       <label for="databaseName" class="block mb-2 text-xs font-medium text-gray-900">Database Name</label>
       <select id="databaseName" (change)="onselectedDatabases()" formControlName="databaseName"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
         [ngClass]="{'border-red-500': isFieldInvalid('databaseName')}">
         <option value="" disabled selected>Select a Database</option>
         <option *ngFor="let db of databases" [value]="db">{{ db }}</option>
@@ -61,7 +61,7 @@
         <div *ngFor="let role of roles; let i = index" class="flex items-center">
           <input type="checkbox" [id]="'role-' + i" [value]="role" (change)="toggleRole(role)"
             [checked]="isRoleSelected(role)"
-            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+            class="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded focus:ring-pink-500">
           <label [for]="'role-' + i" class="ml-2 text-xs font-medium text-gray-900">{{ role }}</label>
         </div>
       </div>
@@ -79,7 +79,7 @@
         <div class="flex flex-wrap gap-2 mb-3">
           <label *ngFor="let perm of schemaPermissionsList" class="ml-2 text-xs font-medium text-gray-900">
             <input type="checkbox" [value]="perm" (change)="toggleSchemaPermission(schema, perm, $event)"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+              class="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded focus:ring-pink-500">
             {{ perm }}
           </label>
         </div>
@@ -94,7 +94,7 @@
         <div class="flex flex-wrap gap-2 mb-3">
           <label *ngFor="let perm of tablePermissionsList" class="ml-2 text-xs font-medium text-gray-900">
             <input type="checkbox" [value]="perm" (change)="toggleTablePermission(table, perm, $event)"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+              class="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded focus:ring-pink-500">
             {{ perm }}
           </label>
         </div>
@@ -105,7 +105,7 @@
     <div class="mb-4">
       <label for="SchemaPerms" class="block mb-2 text-xs font-medium text-gray-900">Permisos de Esquemas</label>
       <input type="text" id="SchemaPerms" formControlName="SchemaPerms" (value)="schemaPermsString" readonly placeholder="seleccione una base de datos primero"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
         [ngClass]="{'border-red-500': isFieldInvalid('SchemaPerms')}">
       <p *ngIf="isFieldInvalid('SchemaPerms')" class="mt-2 text-xs text-red-600">SchemaPerms is required</p>
     </div>
@@ -114,12 +114,12 @@
     <div class="mb-4">
       <label for="TablePerms" class="block mb-2 text-xs font-medium text-gray-900">Permisos de Tablas</label>
       <input type="text" id="TablePerms" formControlName="TablePerms" (value)="tablePermsString" readonly placeholder="seleccione una base de datos primero"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
         [ngClass]="{'border-red-500': isFieldInvalid('TablePerms')}">
       <p *ngIf="isFieldInvalid('TablePerms')" class="mt-2 text-xs text-red-600">TablePerms is required</p>
     </div>
     <button type="submit"
-      class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center">
+      class="w-full text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center">
       Guardar
     </button>
   </div>
