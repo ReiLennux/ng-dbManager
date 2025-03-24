@@ -82,37 +82,37 @@ export class UsrFormView implements OnInit {
             case 1:
               // Error general
               this.failure = true;
-              this.failureMessagge = "An unexpected error occurred.";
+              this.failureMessagge = "Ocurrió un error inesperado";
               setTimeout(() => this.failure = false, 5000);
               break;
             case 2:
               // El login ya existe
               this.failure = true;
-              this.failureMessagge = "The login already exists on the server.";
+              this.failureMessagge = "Este login ya existe en el servidor"; 
               setTimeout(() => this.failure = false, 5000);
               break;
             case 3:
               // El usuario ya existe
               this.failure = true;
-              this.failureMessagge = "The user already exists in the database.";
+              this.failureMessagge = "Este usuario ya existe en la base de datos";
               setTimeout(() => this.failure = false, 5000);
               break;
             case 6:
               // Error en el formato de permisos de esquemas
               this.failure = true;
-              this.failureMessagge = "Schema permissions format is incorrect.";
+              this.failureMessagge = "Los permisos del esquema no son los correctos";
               setTimeout(() => this.failure = false, 5000);
               break;
             case 7:
               // Error en el formato de permisos de tablas
               this.failure = true;
-              this.failureMessagge = "Table permissions format is incorrect.";
+              this.failureMessagge = "Los permisos de la(s) tabla(s) no son los correctos";
               setTimeout(() => this.failure = false, 5000);
               break;
             default:
               // Otro error desconocido
               this.failure = true;
-              this.failureMessagge = `An unknown error occurred (Code: ${res}).`;
+              this.failureMessagge = `Ocurrió un error inesperado (Código: ${res}).`;
               setTimeout(() => this.failure = false, 5000);
               break;
           }
