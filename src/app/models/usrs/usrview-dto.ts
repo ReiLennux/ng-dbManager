@@ -1,8 +1,6 @@
 export class usrviewDto {
-    DatabaseName! : string; 
-    LoginName! : string; 
-    UserName! : string;
-    SchemaPerms! : string; 
-    TablePerms! : string;
-    RoleList! : string;
+    CreationDate! : string;
+    LoginName! : string;
+    IsDisabled! : boolean;
+    LoginType! : string;
 }

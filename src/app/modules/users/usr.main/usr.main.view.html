@@ -13,22 +13,20 @@
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">Usuario</th>
                         <th scope="col" class="px-6 py-3">Login</th>
-                        <th scope="col" class="px-6 py-3">Permisos</th>
-                        <th scope="col" class="px-6 py-3">Permisos de tabla</th>
-                        <th scope="col" class="px-6 py-3">Roles</th>
+                        <th scope="col" class="px-6 py-3">Fecha de Creacion</th>
+                        <th scope="col" class="px-6 py-3">Tipo de login</th>
+                        <th scope="col" class="px-6 py-3">Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let usr of usrs" class="border-b bg-white dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ usr.UserName }}
+                            {{ usr.LoginName }}
                         </th>
-                        <td class="px-6 py-4">{{ usr.LoginName }}</td>
-                        <td class="px-6 py-4">{{ usr.SchemaPerms }}</td>
-                        <td class="px-6 py-4">{{ usr.TablePerms }}</td>
-                        <td class="px-6 py-4">{{ usr.RoleList }}</td>
+                        <td class="px-6 py-4">{{ usr.CreationDate | date: 'short' }}</td>
+                        <td class="px-6 py-4">{{ usr.LoginType }}</td>
+                        <td class="px-6 py-4">{{ usr.IsDisabled }}</td>
                     </tr>
                 </tbody>
             </table>
