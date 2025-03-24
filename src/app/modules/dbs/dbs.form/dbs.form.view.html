@@ -1,55 +1,78 @@
 <form [formGroup]="dbForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-    <a href="/users"
+    <a href="/dbs"
         class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-gray-500 rounded-lg">
         ←
-        Regresar
+        Back
     </a>
-    <h2 class="text-2xl font-bold mb-6">Database Configuration</h2>
+    <div *ngIf="failrule"
+        class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+        role="alert">
+        <div>
+            <span class="font-medium">Oh no!</span> Hubo un problema al crear la base de datos :/
+        </div>
+    </div>
+    <div *ngIf="success"
+        class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+        role="alert">
+        <div>
+            <span class="font-medium">Exito! </span> La base de datos fue creada. ^v^
+        </div>
+    </div>
+    <h2 class="text-2xl font-bold mb-6">Configuración de la Base de Datos</h2>
 
-    <!-- Database Name -->
+    <!-- Nombre de la Base de Datos -->
     <div class="mb-4">
-        <label for="dbname" class="block mb-2 text-xs font-medium text-gray-900">Database Name</label>
+        <label for="dbname" class="block mb-2 text-xs font-medium text-gray-900">Nombre de la Base de Datos</label>
         <input type="text" id="dbname" formControlName="dbname"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
             [ngClass]="{'border-red-500': isFieldInvalid('dbname')}">
-        <p *ngIf="isFieldInvalid('dbname')" class="mt-2 text-xs text-red-600">Database name is required</p>
+        <p *ngIf="isFieldInvalid('dbname')" class="mt-2 text-xs text-red-600">El nombre de la base de datos es
+            obligatorio</p>
     </div>
 
-    <!-- Data File Name -->
+    <!-- Nombre del Archivo de Datos -->
     <div class="mb-4">
-        <label for="datafilename" class="block mb-2 text-xs font-medium text-gray-900">Data File Path (.mdf)</label>
+        <label for="datafilename" class="block mb-2 text-xs font-medium text-gray-900">Ruta del Archivo de Datos
+            (.mdf)</label>
         <input type="text" id="datafilename" formControlName="datafilename"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
             [ngClass]="{'border-red-500': isFieldInvalid('datafilename')}">
-        <p *ngIf="isFieldInvalid('datafilename')" class="mt-2 text-xs text-red-600">Data file path is required</p>
+        <p *ngIf="isFieldInvalid('datafilename')" class="mt-2 text-xs text-red-600">La ruta del archivo de datos es
+            obligatoria</p>
     </div>
 
-    <!-- Log File Name -->
+    <!-- Nombre del Archivo de Registros -->
     <div class="mb-4">
-        <label for="logfilename" class="block mb-2 text-xs font-medium text-gray-900">Log File Path (.ldf)</label>
+        <label for="logfilename" class="block mb-2 text-xs font-medium text-gray-900">Ruta del Archivo de Registros
+            (.ldf)</label>
         <input type="text" id="logfilename" formControlName="logfilename"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
             [ngClass]="{'border-red-500': isFieldInvalid('logfilename')}">
-        <p *ngIf="isFieldInvalid('logfilename')" class="mt-2 text-xs text-red-600">Log file path is required</p>
+        <p *ngIf="isFieldInvalid('logfilename')" class="mt-2 text-xs text-red-600">La ruta del archivo de registros es
+            obligatoria</p>
     </div>
 
     <div class="grid grid-cols-2 gap-4 mb-6">
-        <!-- Data Size -->
+        <!-- Tamaño de los Datos -->
         <div class="mb-4">
-            <label for="datasizeMB" class="block mb-2 text-xs font-medium text-gray-900">Data File Size (MB)</label>
+            <label for="datasizeMB" class="block mb-2 text-xs font-medium text-gray-900">Tamaño del Archivo de Datos
+                (MB)</label>
             <input type="number" id="datasizeMB" formControlName="datasizeMB"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
                 [ngClass]="{'border-red-500': isFieldInvalid('datasizeMB')}">
-            <p *ngIf="isFieldInvalid('datasizeMB')" class="mt-2 text-xs text-red-600">Valid data size is required</p>
+            <p *ngIf="isFieldInvalid('datasizeMB')" class="mt-2 text-xs text-red-600">Se requiere un tamaño válido para
+                los datos</p>
         </div>
 
-        <!-- Log Size -->
+        <!-- Tamaño del Log -->
         <div class="mb-4">
-            <label for="logsizeMB" class="block mb-2 text-xs font-medium text-gray-900">Log File Size (MB)</label>
+            <label for="logsizeMB" class="block mb-2 text-xs font-medium text-gray-900">Tamaño del Archivo de Registros
+                (MB)</label>
             <input type="number" id="logsizeMB" formControlName="logsizeMB"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
                 [ngClass]="{'border-red-500': isFieldInvalid('logsizeMB')}">
-            <p *ngIf="isFieldInvalid('logsizeMB')" class="mt-2 text-xs text-red-600">Valid log size is required</p>
+            <p *ngIf="isFieldInvalid('logsizeMB')" class="mt-2 text-xs text-red-600">Se requiere un tamaño válido para
+                el log</p>
         </div>
     </div>
 
@@ -68,17 +91,17 @@
         </div>
     </div>
 
-    <!-- Growth Settings -->
+    <!-- Configuración de Crecimiento -->
     <div *ngIf="type === 'mb'" class="grid grid-cols-2 gap-4 mb-4">
         <div>
-            <label for="datafilegrowthMB" class="block mb-2 text-xs font-medium text-gray-900">Data File Growth
-                (MB)</label>
+            <label for="datafilegrowthMB" class="block mb-2 text-xs font-medium text-gray-900">Crecimiento del Archivo
+                de Datos (MB)</label>
             <input type="number" id="datafilegrowthMB" formControlName="datafilegrowthMB"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5">
         </div>
         <div>
-            <label for="logfilegrowthMB" class="block mb-2 text-xs font-medium text-gray-900">Log File Growth
-                (MB)</label>
+            <label for="logfilegrowthMB" class="block mb-2 text-xs font-medium text-gray-900">Crecimiento del Archivo de
+                Logs (MB)</label>
             <input type="number" id="logfilegrowthMB" formControlName="logfilegrowthMB"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5">
         </div>
@@ -87,29 +110,31 @@
 
     <div *ngIf="type === '%'" class="grid grid-cols-2 gap-4 mb-4">
         <div>
-            <label for="datafilegrowthPercent" class="block mb-2 text-xs font-medium text-gray-900">Data File Growth
-                (%)</label>
+            <label for="datafilegrowthPercent" class="block mb-2 text-xs font-medium text-gray-900">Crecimiento del
+                Archivo de Datos (%)</label>
             <input type="number" id="datafilegrowthPercent" formControlName="datafilegrowthPercent"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5">
         </div>
         <div>
-            <label for="logfilegrowthPercent" class="block mb-2 text-xs font-medium text-gray-900">Log File Growth
-                (%)</label>
+            <label for="logfilegrowthPercent" class="block mb-2 text-xs font-medium text-gray-900">Crecimiento del
+                Archivo de Logs (%)</label>
             <input type="number" id="logfilegrowthPercent" formControlName="logfilegrowthPercent"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5">
         </div>
     </div>
 
-    <!-- Max Sizes -->
+    <!-- Tamaños Máximos -->
     <div class="grid grid-cols-2 gap-4 mb-6">
         <div>
-            <label for="datamaxsizeMB" class="block mb-2 text-xs font-medium text-gray-900">Max Data Size (MB)</label>
+            <label for="datamaxsizeMB" class="block mb-2 text-xs font-medium text-gray-900">Tamaño Máximo de los Datos
+                (MB)</label>
             <input type="number" id="datamaxsizeMB" formControlName="datamaxsizeMB"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
                 [ngClass]="{'border-red-500': isFieldInvalid('datamaxsizeMB')}">
         </div>
         <div>
-            <label for="logmaxsizeMB" class="block mb-2 text-xs font-medium text-gray-900">Max Log Size (MB)</label>
+            <label for="logmaxsizeMB" class="block mb-2 text-xs font-medium text-gray-900">Tamaño Máximo del Log
+                (MB)</label>
             <input type="number" id="logmaxsizeMB" formControlName="logmaxsizeMB"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
                 [ngClass]="{'border-red-500': isFieldInvalid('logmaxsizeMB')}">
@@ -118,6 +143,6 @@
 
     <button type="submit"
         class="w-full text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center">
-        Submit
+        Enviar
     </button>
 </form>

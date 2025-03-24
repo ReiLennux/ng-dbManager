@@ -10,6 +10,8 @@ import { DbsService } from '../../../core/services/dbs.service';
 export class DbsFormView {
   dbForm: FormGroup;
   type : string = 'mb';
+  success: boolean = false;
+  failrule = false
 
   constructor(private fb: FormBuilder, private dbService: DbsService) {
     this.dbForm = this.fb.group({
@@ -41,9 +43,21 @@ export class DbsFormView {
   onSubmit(): void {
     if (this.dbForm.valid) {
       console.log(this.dbForm.value);
-      this.dbService.createDb(this.dbForm.value).subscribe(res => console.log(res));
-      this.resetForm(); // Reseteo el formulario al finalizar el submit.
+      this.dbService.createDb(this.dbForm.value).subscribe(res => {
+        console.log(res);
+        if (res.success) {
+          this.success = true;
+          setTimeout(() => {
+            this.success = false;
+          }, 5000);
+        }
+      });
+      this.resetForm();
     } else {
+      this.failrule = true;
+      setTimeout(() => {
+        this.failrule = false;
+      }, 5000);
       this.markFormGroupTouched(this.dbForm);
     }
   }

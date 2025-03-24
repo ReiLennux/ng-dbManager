@@ -16,8 +16,8 @@ export class DbsService {
     return this.http.get<DbviewDto[]>(`${this.apiUrl}`);
   }
 
-  createDb(db: DbviewDto): Observable<DbviewDto> {
-    return this.http.post<DbviewDto>(`${this.apiUrl}`, db);
+  createDb(db: DbviewDto): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, db);
   }
 
   getSchemas(dbName: string): Observable<{ SchemaName: string }[]> {
