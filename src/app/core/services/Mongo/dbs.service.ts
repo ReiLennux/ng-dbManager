@@ -15,7 +15,7 @@ export class DbsService {
   }
 
   getDatabases(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
   deleteDatabase(dbName: string): Observable<any> {
@@ -26,8 +26,8 @@ export class DbsService {
     return this.http.get<any[]>(`${this.apiUrl}/${dbName}/collections`);
   }
 
-  createCollection(dbName: string, collectionName: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/${dbName}/collections`, { collectionName });
+  createCollection(form: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${form.dbName}/collections`, { collectionName: form.collectionName });
   }
 
   deleteCollection(dbName: string, collectionName: string): Observable<any> {

@@ -78,11 +78,6 @@ export class BackupMainView implements OnInit {
     });
   }
 
-
-  async openModalWithBackups(databaseName: string) {
-    await this.getbackups(databaseName);  // Espera a que se completen los datos
-    this.toggleModal(databaseName);       // Ahora abre el modal
-  }
   
   async getbackups(dbName: string) {
     try {
@@ -122,7 +117,10 @@ export class BackupMainView implements OnInit {
 
 
 
-
+  async openModalWithBackups(databaseName: string) {
+    await this.getbackups(databaseName);  // Espera a que se completen los datos
+    this.toggleModal(databaseName);       // Ahora abre el modal
+  }
 
   toggleModal(dbId: string): void {
     this.openModals[dbId] = !this.openModals[dbId];

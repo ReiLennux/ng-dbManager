@@ -1,1 +1,142 @@
-<p>dbs.main works!</p>
+<div class="flex justify-center items-center m-40">
+    <div class="w-5/8 p-8 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Creación de Base de Datos</h1>
+        <h5 class="text-sm text-gray-600 dark:text-gray-300">
+            Crea una base de datos con tamaños y crecimientos personalizados.
+        </h5>
+        <div class="flex items-center justify-end">
+            <a href="mongo/dbs/create"
+                class="px-3 py-2 text-xs font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Agregar
+            </a>
+        </div>
+        <div class="relative overflow-x-auto mt-4">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Base de Datos</th>
+                        <th scope="col" class="px-6 py-3">Tamaño en disco</th>
+                        <th scope="col" class="px-6 py-3">Vacía</th>
+                        <th scope="col" class="px-6 py-3">Fecha de Creación</th>
+                        <th scope="col" class="px-6 py-3">Acciones</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let db of dbs" class="border-b bg-white dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ db.name }}
+                        </th>
+                        <td class="px-6 py-4">{{ size(db.sizeOnDisk) }}</td>
+
+                        <td class="px-6 py-4">{{ db.empty }}
+                        </td>
+                        <td class="px-6 py-4">{{ db.createdAt || 'Sin Registro' }}</td>
+
+                        <td class="px-6 py-4 flex">
+                            <button (click)="openModalWithColecciones(db.name); setDb(db.name)"
+                                class="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                type="button">
+                                <svg class="w-5 h-5 text-white" aria-hidden="true" fill="none" viewBox="0 0 16 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3" />
+                                </svg>
+                            </button>
+                            <!-- Modal -->
+                            <div *ngIf="isModalOpen(db.name)"
+                                class="fixed inset-0 z-50 flex items-center justify-center bg-[#00000030]">
+                                <div class="relative p-4 w-full max-w-2xl max-h-3/4 overflow-y-auto">
+                                    <div class="relative bg-white rounded-lg shadow-md p-6">
+                                        <!-- Botón de cerrar -->
+                                        <button type="button" (click)="toggleModal(db.name)"
+                                            class="absolute top-3 right-3 text-gray-400 hover:text-gray-900">
+                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                            </svg>
+                                        </button>
+
+                                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">
+                                            Colecciones de {{ db.name }}
+                                        </h3>
+                                        <div>
+                                            <!-- Agregar colección formulario -->
+                                            <!-- Agregar colección formulario -->
+                                            <div class="p-4 dark:bg-gray-900">
+                                                <form [formGroup]="collectionForm" (ngSubmit)="onSubmit()"
+                                                    class="flex flex-col md:flex-row items-end gap-4">
+                                                    <div class="flex-grow">
+                                                        <input type="text" id="dbname" formControlName="dbName" class="hidden" value="{{db.name}}" required />
+                                                        <label for="collection"
+                                                            class="text-sm font-medium text-gray-700 dark:text-gray-400 block mb-1">
+                                                            Nombre de Colección:
+                                                        </label>
+                                                        <input type="text" id="collection"
+                                                            formControlName="collectionName"
+                                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-300 focus:border-green-300 dark:border-gray-700 dark:bg-gray-800 dark:focus:ring-green-800 dark:focus:border-green-800"
+                                                            required />
+                                                    </div>
+                                                    <button type="submit"
+                                                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-3 w-full md:w-auto">
+                                                        Agregar
+                                                    </button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                        <div *ngIf="!colecciones.length">
+                                            <p class="flex justify-center text-green-800">
+                                                No existen colecciones en esta base de datos.
+                                            </p>
+                                        </div>
+                                        <div *ngIf="colecciones.length">
+                                            <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                Lista de colecciones en la base de datos.
+                                            </p>
+                                        </div>
+                                        <!-- Contenedor scrollable -->
+                                        <div class="max-h-80 overflow-y-auto space-y-4">
+                                            <div *ngFor="let coleccion of colecciones"
+                                                class="flex items-center justify-between bg-gray-50  p-4 rounded-lg shadow-md">
+                                                <div class="w-full flex justify-between">
+                                                    <div>
+                                                        <p class="text-base font-medium text-gray-700 ">
+                                                            {{ coleccion.name }}
+                                                        </p>
+                                                        <p class="my-1 font-medium text-xs text-green-700 ">
+                                                            Tamaño: {{size(coleccion.size)}}
+                                                        </p>
+                                                    </div>
+
+                                                    <button (click)="deleteCollection(db.name, coleccion.name)"
+                                                        class="text-gray-600 hover:text-red-700 focus:outline-none font-medium rounded-lg text-sm">
+                                                        Eliminar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <button (click)="deleteDatabase(db.name)"
+                                class="ml-4 blocktext-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                type="button">
+                                <svg class="w-5 h-5 text-white" aria-hidden="true" fill="none" viewBox="0 0 16 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M3 6h10M3 6l1 9a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-9M6 6V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" />
+                                </svg>
+                            </button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,1 +1,45 @@
-<p>dbs.form works!</p>
+<form [formGroup]="dbForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <a href="mongo/dbs"
+        class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-gray-500 rounded-lg">
+        ←
+        Back
+    </a>
+    <div *ngIf="failrule"
+        class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+        role="alert">
+        <div>
+            <span class="font-medium">Oh no!</span> Hubo un problema al crear la base de datos :/
+        </div>
+    </div>
+    <div *ngIf="success"
+        class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+        role="alert">
+        <div>
+            <span class="font-medium">Exito! </span> La base de datos fue creada. ^v^
+        </div>
+    </div>
+    <h2 class="text-2xl font-bold mb-6">Configuración de la Base de Datos</h2>
+
+    <!-- Nombre de la Base de Datos -->
+    <div class="mb-4">
+        <label for="dbName" class="block mb-2 text-xs font-medium text-gray-900">Nombre de la Base de Datos</label>
+        <input type="text" id="dbName" formControlName="dbName"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
+            [ngClass]="{'border-red-500': isFieldInvalid('dbName')}">
+        <p *ngIf="isFieldInvalid('dbName')" class="mt-2 text-xs text-red-600">El nombre de la base de datos es
+            obligatorio</p>
+    </div>
+
+    <!-- Nombre del Archivo de Datos -->
+    <div class="mb-4">
+        <label for="collectionName" class="block mb-2 text-xs font-medium text-gray-900">Coleccion inicial personalizada (por defecto 'dummy')</label>
+        <input type="text" id="collectionName" formControlName="collectionName"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
+            [ngClass]="{'border-red-500': isFieldInvalid('collectionName')}">
+    </div>
+
+    <button type="submit"
+        class="w-full text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center">
+        Enviar
+    </button>
+</form>
