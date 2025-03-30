@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { DbsService } from '../../../core/services/dbs.service';
-import { DbviewDto } from '../../../models/dbs/dbview-dto';
+import { DbsService } from '../../../../core/services/MSSQL/dbs.service';
+import { DbviewDto } from '../../../../models/MSSQL/dbs/dbview-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BackupsService } from '../../../core/services/backups.service';
-import { Bkpsview } from '../../../models/bkps/bkpsview.dto';
+import { BackupsService } from '../../../../core/services/MSSQL/backups.service';
+import { Bkpsview } from '../../../../models/MSSQL/bkps/bkpsview.dto';
 import { lastValueFrom } from 'rxjs';
 
 @Component({

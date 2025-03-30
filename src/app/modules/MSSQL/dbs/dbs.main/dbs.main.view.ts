@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DbsService } from '../../../core/services/dbs.service';
-import { DbviewDto } from '../../../models/dbs/dbview-dto';
+import { DbsService } from '../../../../core/services/MSSQL/dbs.service';
+import { DbviewDto } from '../../../../models/MSSQL/dbs/dbview-dto';
 
 @Component({
   selector: 'app-dbs.main',

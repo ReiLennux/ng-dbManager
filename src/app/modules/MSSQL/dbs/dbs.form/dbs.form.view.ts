@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DbsService } from '../../../core/services/dbs.service';
+import { DbsService } from '../../../../core/services/MSSQL/dbs.service';
 
 @Component({
   selector: 'app-dbs-form',

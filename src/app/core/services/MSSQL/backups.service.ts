@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Bkpsform } from '../../models/bkps/bkpsform.dto';
-import { Bkpsview } from '../../models/bkps/bkpsview.dto';
+import { Bkpsform } from '../../../models/MSSQL/bkps/bkpsform.dto';
+import { Bkpsview } from '../../../models/MSSQL/bkps/bkpsview.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackupsService {
 
-  private apiUrl = "http://localhost:3000/api/backups"; // Usa environment para manejar la URL
+  private apiUrl = "http://localhost:3000/api/mssql/backups"; // Usa environment para manejar la URL
 
   constructor(private http: HttpClient) { }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { usrviewDto } from '../../../models/usrs/usrview-dto';
-import { UsrService } from '../../../core/services/usr.service';
+import { usrviewDto } from '../../../../models/MSSQL/usrs/usrview-dto';
+import { UsrService } from '../../../../core/services/MSSQL/usr.service';
 
 @Component({
   selector: 'app-usr.main',

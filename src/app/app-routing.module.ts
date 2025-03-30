@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DbsMainView } from './modules/dbs/dbs.main/dbs.main.view';
-import { DbsFormView } from './modules/dbs/dbs.form/dbs.form.view';
-import { UsrMainView } from './modules/users/usr.main/usr.main.view';
-import { UsrFormView } from './modules/users/usr.form/usr.form.view';
-import { BackupMainView } from './modules/backups/backup.main/backup.main.view';
-import { BackupFormView } from './modules/backups/backup.form/backup.form.view';
+import { DbsMainView } from './modules/MSSQL/dbs/dbs.main/dbs.main.view';
+import { DbsFormView } from './modules/MSSQL/dbs/dbs.form/dbs.form.view';
+import { UsrMainView } from './modules/MSSQL/users/usr.main/usr.main.view';
+import { UsrFormView } from './modules/MSSQL/users/usr.form/usr.form.view';
+import { BackupMainView } from './modules/MSSQL/backups/backup.main/backup.main.view';
+import { BackupFormView } from './modules/MSSQL/backups/backup.form/backup.form.view';
 
 const routes: Routes = [
   { path: '', component: DbsMainView },

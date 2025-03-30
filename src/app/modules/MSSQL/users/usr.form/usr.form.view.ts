@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UsrService } from '../../../core/services/usr.service';
-import { DbsService } from '../../../core/services/dbs.service';
+import { UsrService } from '../../../../core/services/MSSQL/usr.service';
+import { DbsService } from '../../../../core/services/MSSQL/dbs.service';
 
 @Component({
   selector: 'app-usr-form',
