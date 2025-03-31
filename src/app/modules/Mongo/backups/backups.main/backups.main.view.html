@@ -1,1 +1,80 @@
-<p>backups.main works!</p>
+<div class="flex justify-center items-center py-16">
+    <div class="w-full max-w-4xl p-8 bg-white border border-gray-200 rounded-lg shadow-md">
+      <!-- Alertas -->
+      <div *ngIf="failure" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+        <strong>¡Error!</strong> Hubo un problema al procesar la solicitud.
+      </div>
+      <div *ngIf="success" class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+        <strong>¡Éxito!</strong> La acción se completó correctamente.
+      </div>
+  
+      <!-- Título -->
+      <h1 class="text-2xl font-bold text-gray-900">Administración de Backups</h1>
+      <h5 class="text-sm text-gray-500">Gestión de respaldos y restauraciones.</h5>
+      
+      <div class="flex justify-end">
+        <button (click)="toggleModal('modal')" class="px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
+          Generar Respaldo
+        </button>
+      </div>
+  
+      <!-- Tabla de Backups -->
+      <div class="relative overflow-x-auto mt-6">
+        <table class="w-full text-sm text-left text-gray-600">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+            <tr>
+              <th class="px-6 py-3">#</th>
+              <th class="px-6 py-3">Base de Datos</th>
+              <th class="px-6 py-3">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let backup of backups; let i = index" class="border-b bg-white hover:bg-gray-50">
+              <td class="px-6 py-4 font-medium text-gray-900">{{ i + 1 }}</td>
+              <td class="px-6 py-4 font-medium text-gray-900">{{ backup }}</td>
+              <td class="px-6 py-4 flex gap-2">
+                <!-- Botón Restaurar Backup -->
+                <button (click)="handleBackupAction('restore', backup)"
+                  class="px-3 py-1 text-sm font-medium text-white bg-green-500 rounded-lg hover:bg-green-600">
+                  Restaurar
+                </button>
+                <!-- Botón Eliminar Backup -->
+                <button (click)="handleBackupAction('delete', backup)"
+                  class="px-3 py-1 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- Modal de Generación de Backup -->
+      <div *ngIf="isModalOpen('modal')" class="fixed inset-0 z-50 flex items-center justify-center bg-[#00000030]">
+        <div class="relative p-4 w-full max-w-2xl">
+          <div class="relative bg-white rounded-lg shadow-md p-6">
+            <button type="button" (click)="toggleModal('modal')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-900">
+              <svg class="w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+              </svg>
+            </button>
+            <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">
+              Generar Respaldo
+            </h3>
+            <div class="max-h-80 overflow-y-auto space-y-4">
+              <div *ngFor="let db of dbs" class="flex items-center justify-between bg-gray-50 p-4 rounded-lg shadow-md">
+                <p class="text-base font-medium text-gray-700">{{ db.name }}</p>
+                <button (click)="handleBackupAction('create', db.name)"
+                  class="px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                  Generar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  

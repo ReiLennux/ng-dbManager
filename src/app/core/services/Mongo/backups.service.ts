@@ -10,18 +10,23 @@ export class BackupsService {
 
   constructor(private http: HttpClient) { }
 
+  // Crear un backup de una base de datos
   createBackup(dbName: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/backups/${dbName}`, {});
   }
 
-  listBackups(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/backups`);
+  // Listar los backups, con un parámetro opcional dbName para filtrar
+  listBackups(dbName?: string): Observable<any[]> {
+    const url = dbName ? `${this.apiUrl}/backups?dbName=${dbName}` : `${this.apiUrl}/backups`;
+    return this.http.get<any[]>(url);
   }
 
-  restoreBackup(dbName: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/backups/restore/${dbName}`, {});
+  // Restaurar un backup especificando el nombre del archivo de backup
+  restoreBackup(backupName: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/backups/restore/${backupName}`, {});
   }
 
+  // Eliminar un backup
   deleteBackup(filename: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/backups/${filename}`);
   }
