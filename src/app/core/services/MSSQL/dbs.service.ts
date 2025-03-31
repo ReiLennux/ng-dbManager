@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { DbviewDto } from '../../../models/MSSQL/dbs/dbview-dto';
+import { environment } from '../../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbsService {
 
-  private apiUrl = "http://localhost:3000/api/mssql/databases"; // Usa environment para manejar la URL
+          private apiUrl = `${environment.API_URL}/mssql/databases`;
 
   constructor(private http: HttpClient) { }
 

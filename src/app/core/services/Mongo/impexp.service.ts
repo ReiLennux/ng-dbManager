@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../../../environments/environments';
 
 interface ExportResponse {
   success: boolean;
@@ -13,7 +14,7 @@ interface ExportResponse {
   providedIn: 'root'
 })
 export class ImpexpService {
-  private apiUrl = "http://localhost:3000/api/mongo/expimp";  // URL de la API
+      private apiUrl = `${environment.API_URL}/mongo/expimp`;
 
   constructor(private http: HttpClient) {}
 

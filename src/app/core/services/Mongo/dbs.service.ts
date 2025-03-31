@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbsService {
-  private apiUrl = "http://localhost:3000/api/mongo/databases";
+    private apiUrl = `${environment.API_URL}/mongo/databases`;
 
   constructor(private http: HttpClient) { }
 

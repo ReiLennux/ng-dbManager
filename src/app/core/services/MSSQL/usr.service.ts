@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { usrviewDto } from '../../../models/MSSQL/usrs/usrview-dto';
 import { Observable } from 'rxjs';
 import { usrformDto } from '../../../models/MSSQL/usrs/usrform-dto';
+import { environment } from '../../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsrService {
-
-  private apiUrl = "http://localhost:3000/api/mssql/login-users"; // Usa environment para manejar la URL
+          private apiUrl = `${environment.API_URL}/mssql/login-users`;
   constructor(private http: HttpClient) { }
 
   getUsers(): Observable<usrviewDto[]> {
