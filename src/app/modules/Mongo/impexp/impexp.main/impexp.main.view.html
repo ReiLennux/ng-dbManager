@@ -1,1 +1,129 @@
-<p>impexp.main works!</p>
+<div class="container mx-auto p-8">
+    <h1 class="text-2xl font-bold mb-4">Administración de Importación y Exportación de Datos</h1>
+
+
+
+    <div class="flex flex-col items-center">
+        <!-- Selector de operación -->
+        <div class="relative flex items-center space-x-4 mb-4 bg-gray-200 rounded-lg">
+            <div class="absolute top-0 bottom-0 bg-green-600 rounded-lg transition-all duration-300" [ngStyle]="{
+                'left': operationType === 'export' ? '0%' : '50%',
+                'width': '50%'
+            }"></div>
+            <button (click)="operationType = 'export'"
+                class="relative z-10 px-4 py-1 rounded-lg w-1/2 text-center transition-all duration-300"
+                [ngClass]="{'text-white': operationType === 'export', 'text-gray-700': operationType !== 'export'}">
+                <span class="text-lg font-medium">Exportar</span>
+            </button>
+            <button (click)="operationType = 'import'"
+                class="relative z-10 px-4 py-1 rounded-lg w-1/2 text-center transition-all duration-300"
+                [ngClass]="{'text-white': operationType === 'import', 'text-gray-700': operationType !== 'import'}">
+                <span class="text-lg font-medium">Importar</span>
+            </button>
+        </div>
+
+        <!-- Mensajes de respuesta -->
+        <div *ngIf="responseMessage" class=" w-1/2 mb-4 p-4 border border-gray-200 rounded-md"
+            [ngClass]="{'bg-green-50': responseType === 'success', 'bg-red-50': responseType === 'error'}">
+            <p class="text-sm"
+                [ngClass]="{'text-green-800': responseType === 'success', 'text-red-800': responseType === 'error'}">
+                {{ responseMessage }}
+            </p>
+        </div>
+
+        <!-- Formulario Exportar -->
+        <div *ngIf="operationType === 'export'"
+            class="mb-8 w-1/2 p-8 bg-white border border-gray-200 rounded-lg shadow-sm">
+            <h2 class="text-xl font-semibold mb-2">Exportar Datos</h2>
+            <form [formGroup]="exportForm" (ngSubmit)="onExport()">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Base de Datos</label>
+                    <select formControlName="databaseName" (change)="getCollections()"
+                        class="border border-gray-200 rounded-lg p-2 w-full">
+                        <option value="" disabled selected>Selecciona una Base de Datos</option>
+                        <option *ngFor="let db of dbs" [value]="db.name">{{ db.name }}</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700">Colección</label>
+                    <select formControlName="collectionName" class="border border-gray-200 rounded-lg p-2 w-full">
+                        <option value="" disabled selected>Selecciona una Colección</option>
+                        <option *ngFor="let col of collections" [value]="col.name">{{ col.name }}</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700">Formato de Exportación</label>
+                    <select formControlName="exportType" class="border border-gray-200 rounded-lg p-2 w-full">
+                        <option value="json">JSON</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                    Exportar
+                </button>
+            </form>
+        </div>
+
+        <!-- Formulario Importar -->
+        <div *ngIf="operationType === 'import'"
+            class="mb-8 w-1/2 p-8 bg-white border border-gray-200 rounded-lg shadow-sm">
+            <h2 class="text-xl font-semibold mb-2">Importar Datos</h2>
+            <form [formGroup]="importForm" (ngSubmit)="onImport()">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Base de Datos</label>
+                    <select formControlName="importDbName" (change)="getCollectionsImport()"
+                        class="border border-gray-200 rounded-lg p-2 w-full">
+                        <option value="" disabled selected>Selecciona una Base de Datos</option>
+                        <option *ngFor="let db of dbs" [value]="db.name">{{ db.name }}</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700">Colección</label>
+                    <select formControlName="importCollection" class="border border-gray-200 rounded-lg p-2 w-full">
+                        <option value="" disabled selected>Selecciona una Colección</option>
+                        <option *ngFor="let col of collections" [value]="col.name">{{ col.name }}</option>
+                    </select>
+                </div>
+                <div class="flex flex-col items-center justify-center w-full">
+                    <!-- Zona de arrastrar y soltar -->
+                    <label 
+                        class="flex flex-col items-center justify-center w-full h-40 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition"
+                        (click)="fileInput.click()">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-10 h-10 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500">
+                                <span class="font-semibold">Click para subir</span> o arrastra y suelta
+                            </p>
+                            <p class="text-xs text-gray-500">Archivos con formato JSON o CSV</p>
+                        </div>
+                    </label>
+                
+                    <!-- Input oculto -->
+                    <input 
+                        type="file" 
+                        #fileInput 
+                        class="hidden" 
+                        (change)="onFileSelect($event)" 
+                        accept=".json, .csv" />
+                
+                    <!-- Mostrar nombre del archivo seleccionado -->
+                    <p *ngIf="selectedFileName" class="mt-2 text-sm text-gray-600">
+                        Archivo seleccionado: <span class="font-semibold">{{ selectedFileName }}</span>
+                    </p>
+                </div>
+                
+
+                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                    Importar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

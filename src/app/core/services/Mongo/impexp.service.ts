@@ -1,16 +1,50 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+interface ExportResponse {
+  success: boolean;
+  message: string;
+  data?: any;  // Se usará para los datos exportados (JSON o CSV)
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImpexpService {
-  private apiUrl = "http://localhost:3000/api/mongo/expimp";
+  private apiUrl = "http://localhost:3000/api/mongo/expimp";  // URL de la API
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  exportData(type: 'json' | 'csv', dbName: string, collection: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${type}/${dbName}/${collection}`);
+  // Método para exportar datos (JSON o CSV)
+  exportData(type: 'json' | 'csv', dbName: string, collection: string): Observable<ExportResponse> {
+    return this.http.get<ExportResponse>(`${this.apiUrl}/${type}/${dbName}/${collection}`).pipe(
+      catchError(this.handleError)  // Manejo de errores
+    );
+  }
+
+  // Método para importar datos (JSON o CSV)
+  importData(type: 'json' | 'csv', dbName: string, collection: string, data: JSON | string ): Observable<ExportResponse> {
+    console.log(`${this.apiUrl}/import/${type}/${dbName}/${collection}`, { data });
+  
+    return this.http.post<ExportResponse>(`${this.apiUrl}/import/${type}/${dbName}/${collection}`, { data }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+
+  // Función para manejar errores en la API
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = 'An unknown error occurred!';
+    if (error.error instanceof ErrorEvent) {
+      // Error del lado del cliente
+      errorMessage = `Client-side error: ${error.error.message}`;
+    } else {
+      // Error del lado del servidor
+      errorMessage = `Server-side error: ${error.status} - ${error.message}`;
+    }
+    console.error(errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 }
