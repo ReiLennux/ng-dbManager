@@ -1,1 +1,115 @@
-<p>users.main works!</p>
+<div class="flex justify-center items-center m-40">
+    <div class="w-full p-8 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        
+        <div *ngIf="failure"
+        class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+        role="alert">
+        <div>
+            <span class="font-medium">Oh no!</span> Hubo un problema al generar el respaldo :/
+        </div>
+    </div>
+    <div *ngIf="success" class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+        role="alert">
+        <div>
+            <span class="font-medium">Exito!</span> El respaldo se genero de manera adecuada. ^v^
+        </div>
+    </div>
+        <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Creación de un usuario y login</h1>
+        <h5 class="text-sm text-gray-600 dark:text-gray-300">
+            Creación de accesos y usuarios con permisos personalizados.
+        </h5>
+        <div class="flex items-center justify-end">
+            <a href="mongo/users/create" class="px-3 py-2 text-xs font-medium text-center text-white bg-pink-700 rounded-lg hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">
+                Agregar
+            </a>
+        </div>
+        <div class="relative overflow-x-auto mt-4">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Id</th>
+                        <th scope="col" class="px-6 py-3">Nombre de usuario</th>
+                        <th scope="col" class="px-6 py-3">Roles</th>
+                        <th scope="col" class="px-6 py-3">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let usr of usrs" class="border-b bg-white dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ usr.userId }}
+                        </th>
+                        <td class="px-6 py-4">{{ usr.user}}</td>
+                        <td class="px-6 py-4">
+                            <button (click)="toggleModal(usr.user);"
+                                class="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                type="button">
+                                <svg class="w-5 h-5 text-white" aria-hidden="true" fill="none" viewBox="0 0 16 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3" />
+                                </svg>
+                            </button>
+                            <!-- Modal -->
+                            <div *ngIf="isModalOpen(usr.user)"
+                                class="fixed inset-0 z-50 flex items-center justify-center bg-[#00000030]">
+                                <div class="relative p-4 w-full max-w-2xl max-h-3/4 overflow-y-auto">
+                                    <div class="relative bg-white rounded-lg shadow-md p-6">
+                                        <!-- Botón de cerrar -->
+                                        <button type="button" (click)="toggleModal(usr.user)"
+                                            class="absolute top-3 right-3 text-gray-400 hover:text-gray-900">
+                                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                            </svg>
+                                        </button>
+
+                                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">
+                                            Roles de {{ usr.user }}
+                                        </h3>
+
+                                        <div *ngIf="!usr.roles.length">
+                                            <p class="flex justify-center text-green-800">
+                                                No existen roles para este usuario.
+                                            </p>
+                                        </div>
+                                        <div *ngIf="usr.roles.length">
+                                            <p class="text-sm text-gray-600 dark:text-gray-300">
+                                                Lista de roles por base de datos.
+                                            </p>
+                                        </div>
+                                        <!-- Contenedor scrollable -->
+                                        <div class="max-h-80 overflow-y-auto space-y-4">
+                                            <div *ngFor="let rol of usr.roles"
+                                                class="flex items-center justify-between bg-gray-50  p-4 rounded-lg shadow-md">
+                                                <div class="w-full flex justify-between">
+                                                    <div>
+                                                        <p class="text-base font-medium text-gray-700 ">
+                                                            {{ rol.db }}
+                                                        </p>
+                                                        <p class="my-1 font-medium text-xs text-green-700 ">
+                                                            {{ rol.role }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <button
+                                (click)="deleteUser(usr.user)"
+                                class="px-3 py-2 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                            >
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

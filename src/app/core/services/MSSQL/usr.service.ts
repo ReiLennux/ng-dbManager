@@ -20,5 +20,9 @@ export class UsrService {
     return this.http.post(`${this.apiUrl}`, user);
   }
 
+  deleteUser(username: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${username}`);
+  }
+
   
 }
